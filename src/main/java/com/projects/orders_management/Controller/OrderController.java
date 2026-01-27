@@ -28,8 +28,8 @@ public class OrderController {
     }
 
     @GetMapping("/customers/{customerId}")
-    public List<OrderResponseDTO> getOrdersByCustomer(@PathVariable long customerId0){
-        return orderService.getOrdersByCustomers(customerId0);
+    public List<OrderResponseDTO> getOrdersByCustomer(@PathVariable Long id){
+        return orderService.getOrdersByCustomers(id);
     }
 
 }
