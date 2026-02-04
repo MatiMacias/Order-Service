@@ -1,7 +1,11 @@
 package com.projects.orders_management.Controller;
 
+import com.projects.orders_management.DTO.product.ProductCreateRequest;
+import com.projects.orders_management.DTO.product.ProductResponse;
+import com.projects.orders_management.DTO.product.ProductUpdateRequest;
 import com.projects.orders_management.Model.Product;
 import com.projects.orders_management.Service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,23 +22,24 @@ public class ProductController {
 
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product){
-        return productService.createProduct(product);
+    public ProductResponse createProduct(@Valid @RequestBody ProductCreateRequest request){
+        return productService.createProduct(request);
     }
 
     @GetMapping
-    public List<Product> getAllProducts(){
+    public List<ProductResponse> getAllProducts(){
         return productService.findAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product productById(@PathVariable Long id){
+    public ProductResponse productById(@PathVariable Long id){
         return productService.productById(id);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product){
-        return productService.uptadeProduct(id, product);
+    public ProductResponse updateProduct(@PathVariable Long id,
+                                 @Valid @RequestBody ProductUpdateRequest request){
+        return productService.uptadeProduct(id, request);
     }
 
     @DeleteMapping("/{id}")

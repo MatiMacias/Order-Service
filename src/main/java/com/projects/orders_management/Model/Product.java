@@ -3,6 +3,8 @@ package com.projects.orders_management.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 public class Product {
@@ -14,7 +16,10 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    private Double price;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
+    private Boolean active = true;
 
 
 }
