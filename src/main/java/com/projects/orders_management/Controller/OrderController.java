@@ -1,8 +1,11 @@
 package com.projects.orders_management.Controller;
 
-import com.projects.orders_management.DTO.OrderRequestDTO;
-import com.projects.orders_management.DTO.OrderResponseDTO;
+import com.projects.orders_management.DTO.order.OrderCreateRequest;
+import com.projects.orders_management.DTO.order.OrderRequestDTO;
+import com.projects.orders_management.DTO.order.OrderResponse;
+import com.projects.orders_management.DTO.order.OrderResponseDTO;
 import com.projects.orders_management.Service.OrderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +21,18 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderResponseDTO createOrder(@RequestBody OrderRequestDTO dto){
-        return orderService.createOrder(dto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderResponse createOrder(@RequestBody OrderCreateRequest request){
+        return orderService.createOrder(request);
     }
 
     @GetMapping
-    public List<OrderResponseDTO> getAllOrders(){
+    public List<OrderResponse> getAllOrders(){
         return orderService.getAllOrders();
     }
 
     @GetMapping("/customers/{customerId}")
-    public List<OrderResponseDTO> getOrdersByCustomer(@PathVariable Long customerId){
+    public List<OrderResponse> getOrdersByCustomer(@PathVariable Long customerId){
         return orderService.getOrdersByCustomers(customerId);
     }
 

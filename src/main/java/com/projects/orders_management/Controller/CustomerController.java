@@ -1,7 +1,12 @@
 package com.projects.orders_management.Controller;
 
+import com.projects.orders_management.DTO.customer.CustomerCreateRequest;
+import com.projects.orders_management.DTO.customer.CustomerResponse;
+import com.projects.orders_management.DTO.customer.CustomerUpdateRequest;
 import com.projects.orders_management.Model.Customer;
 import com.projects.orders_management.Service.CustomerService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,27 +22,31 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer customer){
-        return customerService.createCustomer(customer);
+    public CustomerResponse createCustomer(
+            @Valid @RequestBody CustomerCreateRequest request){
+        return customerService.createCustomer(request);
     }
 
     @GetMapping
-    public List<Customer> getAllCustomers(){
+    public List<CustomerResponse> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 
     @GetMapping("/{id}")
-    public Customer findById(@PathVariable Long id){
+    public CustomerResponse findById(@PathVariable Long id){
         return customerService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Customer updateCustomer(@PathVariable Long id,@RequestBody Customer customer){
+    public CustomerResponse updateCustomer(
+            @PathVariable Long id,
+            @Valid @RequestBody CustomerUpdateRequest request){
 
-        return customerService.updateCustomer(id, customer);
+        return customerService.updateCustomer(id, request);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable Long id){
         customerService.deleteCustomer(id);
     }

@@ -1,9 +1,14 @@
 package com.projects.orders_management.Service;
 
+import com.projects.orders_management.DTO.product.ProductCreateRequest;
+import com.projects.orders_management.DTO.product.ProductResponse;
+import com.projects.orders_management.DTO.product.ProductUpdateRequest;
 import com.projects.orders_management.Model.Product;
 import com.projects.orders_management.Repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,36 +21,65 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(Product product){
-        if(productRepository.existsByName(product.getName())){
+    public ProductResponse createProduct(ProductCreateRequest request){
+        if(productRepository.existsByName(request.getName())){
             throw new IllegalArgumentException("This product already exists");
         }
-        return productRepository.save(product);
+        Product product = new Product();
+        product.setName(request.getName());
+        product.setPrice(request.getPrice());
+
+        Product saved = productRepository.save(product);
+
+        return mapToResponse(saved);
     }
 
-    public List<Product> findAllProducts(){
-        return productRepository.findAll();
+    public List<ProductResponse> findAllProducts(){
+        return productRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
-    public Product productById(Long id){
-        return productRepository.findById(id)
+    public ProductResponse productById(Long id){
+        Product product = productRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Product not found with id: "+id));
 
+        return mapToResponse(product);
     }
 
-    public Product uptadeProduct(Long id, Product product){
+    public ProductResponse uptadeProduct(Long id, ProductUpdateRequest request){
         Product newProduct = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: "+id));
 
-        newProduct.setName(product.getName());
-        newProduct.setPrice(product.getPrice());
+        newProduct.setName(request.getName());
+        newProduct.setPrice(request.getPrice());
 
-        return productRepository.save(newProduct);
+        Product update = productRepository.save(newProduct);
+
+        return mapToResponse(update);
     }
 
     public void deleteProduct(Long id){
-        Product product = productById(id);
+        if(!productRepository.existsById(id)){
+            throw new RuntimeException("Product not found");
+        }
         productRepository.deleteById(id);
+    }
+
+    public Product getProductEntityById(Long id){
+        return productRepository.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,"Product not found"
+                ));
+    }
+
+    private ProductResponse mapToResponse(Product product){
+        ProductResponse response = new ProductResponse();
+        response.setId(product.getId());
+        response.setName(product.getName());
+        response.setPrice(product.getPrice());
+        return response;
     }
 
 }

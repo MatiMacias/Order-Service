@@ -1,6 +1,4 @@
-package com.projects.orders_management.DTO;
-
-import com.projects.orders_management.Model.OrderStatus;
+package com.projects.orders_management.DTO.order;
 
 import java.time.LocalDate;
 

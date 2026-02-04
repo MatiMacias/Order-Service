@@ -1,4 +1,4 @@
-package com.projects.orders_management.DTO;
+package com.projects.orders_management.DTO.order;
 
 import java.time.LocalDate;
 
