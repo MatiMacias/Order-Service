@@ -137,5 +137,5 @@ permitiendo manejar correctamente cantidades y precios.</p>
 <hr>
 
 <h2>Autor</h2>
-
-<p>Desarrollado como proyecto de portfolio profesional enfocado en backend.</p>
+<p>Desarrollado por Matías Macías 🇦🇷 Backend Developer</p>
+<p>Proyecto creado con fines educativos y como parte de un portfolio profesional.</p>
